@@ -11,17 +11,21 @@ jobs:
   test:
     environment: testing
     runs-on: ubuntu-latest
-    container: node:24
+    # container: node:24
     env:
       MONGODB_CONNECTION_PROTOCOL: mongodb
       # use the services mongodb as the MONGODB_CLUSTER_ADDRESS only if you run the image with container
-      MONGODB_CLUSTER_ADDRESS: mongodb
+      # ! MONGODB_CLUSTER_ADDRESS: mongodb
+      # if you comment down the node container image then you have to mention the cluster address as an IP based as we do in localhost connect
+      MONGODB_CLUSTER_ADDRESS: 127.0.0.1:27017
       MONGODB_USERNAME: root
       MONGODB_PASSWORD: example
       PORT: 8080
     services:
       mongodb:
         image: mongo
+        ports:
+          - 27017:27017
         env:
           MONGO_INITDB_ROOT_USERNAME: root
           MONGO_INITDB_ROOT_PASSWORD: example
@@ -45,8 +49,8 @@ jobs:
   deploy:
     needs: test
     runs-on: ubuntu-latest
-    container:
-      image: node:24
+    # container:
+    #   image: node:24
     steps:
       - name: Output information
         env:
