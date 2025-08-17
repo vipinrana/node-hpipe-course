@@ -37,6 +37,8 @@ jobs:
   deploy:
     needs: test
     runs-on: ubuntu-latest
+    container:
+      image: node:24
     steps:
       - name: Output information
         env:
